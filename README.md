@@ -4,12 +4,12 @@
 
 <hr>
 
-Proqramı işə salmaq üçün ilk öncə requirements.txt-dəki paketləri yükləyin. 
-Daha sonra messages.txt faylı yaradın main.py yanında.
-Daha sonra data.json faylı yaradın main.py yanında.
-Daha sonra data.json içərisinə bunu yazın {"users":[], "games":[]}
-Daha sonra .env faylı yaradın və içərisində TG_API_KEY=SizinApiKey yazın
-Daha sonra scripts.py içərisindəki HELP_TEXT -i öz botunuza uyğun düzəldin (Botun adı falan).
+Proqramı işə salmaq üçün ilk öncə requirements.txt-dəki paketləri yükləyin. <br>
+Daha sonra messages.txt faylı yaradın main.py yanında.<br>
+Daha sonra data.json faylı yaradın main.py yanında.<br>
+Daha sonra data.json içərisinə bunu yazın {"users":[], "games":[]}<br>
+Daha sonra .env faylı yaradın və içərisində TG_API_KEY=SizinApiKey yazın<br>
+Daha sonra scripts.py içərisindəki HELP_TEXT -i öz botunuza uyğun düzəldin (Botun adı falan).<br>
 
 <hr>
 
