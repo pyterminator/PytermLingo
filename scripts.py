@@ -1,10 +1,12 @@
+import os
+import sys
 import json
 import time
 from telegram import Update
 from telegram import constants 
 from telegram.ext import ContextTypes
 from string import ascii_uppercase
-from random import randint 
+from random import randint, shuffle
 
 
 HELP_TEXT = """
@@ -18,11 +20,25 @@ Mənim sənə ingilis dilindən sual verməyim üçün və ya kömək etməyim �
 <b>/help</b> ya da <b>/start</b> - bu əmrləri çalışdırdığında, mən sənə özüm haqqımda məlumat verirəm.
 <b>/aboutme</b> - bu əmri çalışdırdığınızda, mən sizin neçə xal topladığınızı sizə göndərəcəm.
 <b>/alphabet</b> - bu əmri çalışdırdığında, mən sənə ingilis əlifbasını əzbərləməyin üçün kömək edirəm.
+<b>/d1wg</b> - bu əmri çalışdırdığında, mən sənə ilk günün sözlərini sual verirəm.
 <b>/stop</b> - bu əmri çalışdırdığında, mən aktiv olan oyunu sonlandırıram.
 <b>QEYD :</b> - Oyun başlatdıqdan sonra yalnız oyuna fokuslanıram. Doğru cavabı yazana qədər yazdığın mesajı siləcəm. Əgər oyunu dayandırmaq istəsən <b>/stop</b> əmrini çalışdırarsan.
 Əgər oyunlarımdan həzz aldınsa, müəllifimin youtube-kanalına dəstək olmağı unutma :)
 Hələlikk ))
 """
+
+def GetImagesDay1(folder_name="day-1"):
+    images = [] 
+    BASE_DIR = os.getcwd()
+    PATH = os.path.join(BASE_DIR, "images", "day-1") 
+    images_listdir = os.listdir(PATH)
+    for img_name in images_listdir:
+        img_path = os.path.join(PATH, img_name)
+        images.append(img_path) 
+    return images
+
+
+ 
 
 def WriteData(data,file_name="data.json", encoding="utf-8"):
     with open(file_name, mode="w", encoding=encoding) as json_file:
@@ -216,3 +232,35 @@ async def AutoMessages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.delete_message(update.effective_chat.id, update.message.id)
             await update.effective_chat.send_message(HELP_TEXT, disable_web_page_preview=True, parse_mode=constants.ParseMode.HTML)
     else: await update.effective_chat.send_message("Aktiv oyun yoxdur. /help yazaraq kömək istə!")
+
+
+async def Day1WordGame(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # images = GetImagesDay1()
+    # shuffle(images)
+    # img = images[0]
+    # img_name = img[img.rfind("\\")+1:img.rfind(".")]
+    # copy_img_name = img_name
+    # img_name = list(img_name)
+    # shuffle(img_name)
+    # img_name = "".join(img_name)
+    # while img_name == copy_img_name:
+    #     img_name = list(img_name)
+    #     shuffle(img_name)
+    #     img_name = "".join(img_name)
+
+
+    global data
+    data = ReadData()
+    games = GetGames(data)
+    users = GetUsers(data) 
+
+    for user in users:
+        if user.get("id", None) == update.message.from_user.id:
+            user["active_game"] = "alphabet"
+            data["users"] = users 
+            break 
+
+
+    # await update.effective_chat.send_photo(photo=img,caption=f"*{img_name}* <- bu hərflərdən istifadə edərək sözü düzəlt...", parse_mode='Markdown')
+
+

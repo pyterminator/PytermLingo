@@ -7,6 +7,7 @@ from scripts import (
     AboutMe, # /aboutme
     Alphabet, # /alphabet 
     AutoMessages, # AutoMessages 
+    Day1WordGame, # /d1wg
 )
 
 # TgBot İmports 
@@ -31,7 +32,8 @@ def RunBot(API_KEY):
         application.add_handler(CommandHandler('stop',Stop)) 
         application.add_handler(CommandHandler('aboutme',AboutMe)) 
         application.add_handler(CommandHandler('help',Start)) 
-        application.add_handler(CommandHandler('alphabet',Alphabet)) 
+        application.add_handler(CommandHandler('alphabet',Alphabet))
+        application.add_handler(CommandHandler('d1wg',Day1WordGame)) 
         application.add_handler(MessageHandler(filters=filters.TEXT, callback=AutoMessages))
         # Polling
         application.run_polling()
