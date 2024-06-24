@@ -186,6 +186,74 @@ async def AboutMe(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.effective_chat.send_message(f"Sizin topladığınız maksimum xal = {my_score}")
 
 
+async def Day1WordGame(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global data
+    data = ReadData()
+    games = GetGames(data)
+    users = GetUsers(data) 
+
+    images = GetImagesDay1()
+    shuffle(images)
+    img = images[0]
+    img_name = img[img.rfind("\\")+1:img.rfind(".")]
+    copy_img_name = img_name
+    img_name = list(img_name)
+    shuffle(img_name)
+    img_name = "".join(img_name)
+    while img_name == copy_img_name:
+        img_name = list(img_name)
+        shuffle(img_name)
+        img_name = "".join(img_name)
+ 
+    for user in users:
+        if user.get("id", None) == update.message.from_user.id:
+            user["active_game"] = "d1wg"
+            data["users"] = users 
+            break 
+    
+    for game in games:
+        if game.get("chat_id", None) and game.get("chat_id", None) == update.message.chat.id and game.get("answered", None) == False and game.get("game_type", None) == "d1wg":
+            text = game.get("text")
+            text = f"*{text}* <- bu hərflərdən istifadə edərək sözü düzəlt..."
+            img = None
+            for image in images:
+                if image.find(game.get("letter", None)) != -1:
+                    img = image 
+                    break 
+            game['message_id_updated'] = True 
+            repeat_game = await update.effective_chat.send_photo(photo=img,caption=text, parse_mode='Markdown')
+            game['message_id'] = repeat_game.message_id
+            await context.bot.delete_message(update.effective_chat.id, update.message.id)
+            data["games"] = games
+            WriteData(data)
+            return
+    
+    message = await update.effective_chat.send_photo(photo=img,caption=f"*{img_name}* <- bu hərflərdən istifadə edərək sözü düzəlt...", parse_mode='Markdown')
+
+    
+    game = {
+        "text": img_name,
+        "letter": copy_img_name,
+        "update_id": update.update_id, 
+        "bot_id": message.from_user.id,
+        "chat_id": message.chat.id,
+        "chat_type": message.chat.type,
+        "message_id": message.message_id, 
+        "response_text": None,
+        "answered":False,
+        "message_id_updated":False,
+        "game_type":"d1wg", 
+    }
+
+    
+    games.append(game)
+    data["games"] = games 
+    WriteData(data)
+
+
+
+
+
 async def AutoMessages(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     global data 
     data = ReadData()
@@ -233,34 +301,5 @@ async def AutoMessages(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.effective_chat.send_message(HELP_TEXT, disable_web_page_preview=True, parse_mode=constants.ParseMode.HTML)
     else: await update.effective_chat.send_message("Aktiv oyun yoxdur. /help yazaraq kömək istə!")
 
-
-async def Day1WordGame(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # images = GetImagesDay1()
-    # shuffle(images)
-    # img = images[0]
-    # img_name = img[img.rfind("\\")+1:img.rfind(".")]
-    # copy_img_name = img_name
-    # img_name = list(img_name)
-    # shuffle(img_name)
-    # img_name = "".join(img_name)
-    # while img_name == copy_img_name:
-    #     img_name = list(img_name)
-    #     shuffle(img_name)
-    #     img_name = "".join(img_name)
-
-
-    global data
-    data = ReadData()
-    games = GetGames(data)
-    users = GetUsers(data) 
-
-    for user in users:
-        if user.get("id", None) == update.message.from_user.id:
-            user["active_game"] = "alphabet"
-            data["users"] = users 
-            break 
-
-
-    # await update.effective_chat.send_photo(photo=img,caption=f"*{img_name}* <- bu hərflərdən istifadə edərək sözü düzəlt...", parse_mode='Markdown')
 
 
