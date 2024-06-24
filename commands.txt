@@ -1,0 +1,6 @@
+start - Bot haqqında məlumat ver
+help - Bot haqqında məlumat ver
+stop - Aktiv oyunu dayandır
+alphabet - İngilis əlifbasını əzbərləməyimə kömək et
+d1wg - Gün 1-in sözlərini məndən soruş
+aboutme - Neçə xalım var ?

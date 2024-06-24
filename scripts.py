@@ -251,9 +251,6 @@ async def Day1WordGame(update: Update, context: ContextTypes.DEFAULT_TYPE):
     WriteData(data)
 
 
-
-
-
 async def AutoMessages(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     global data 
     data = ReadData()
@@ -273,21 +270,30 @@ async def AutoMessages(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if find_user.get("active_game", None) != None:
         my_games = []
-        for game in games:
-            if game.get("chat_id", None) and game.get("chat_id", None) == update.effective_chat.id and game.get("answered", None) == False and game.get("game_type", None) == "alphabet":
-                my_games.append(game)
+
+        my_active_game = find_user.get("active_game")
+        if my_active_game == "alphabet": 
+            for game in games:
+                if game.get("chat_id", None) and game.get("chat_id", None) == update.effective_chat.id and game.get("answered", None) == False and game.get("game_type", None) == "alphabet":
+                    my_games.append(game)
+        elif my_active_game == "d1wg":
+            for game in games:
+                if game.get("chat_id", None) and game.get("chat_id", None) == update.effective_chat.id and game.get("answered", None) == False and game.get("game_type", None) == "d1wg":
+                    my_games.append(game)
 
         if len(my_games) == 1:
             game = my_games[0]
             answer = update.message.text.strip().upper()
-            if game.get("text", None) and (game.get("letter", None) == answer):
+            if game['letter'].upper() == answer:
                 user = find_user
-                user["score"] += 1
+                if my_active_game == "alphabet": user["score"] += 1
+                elif my_active_game == "d1wg": user["score"] += 2 
                 game["answered"] = True 
                 game["response_text"] = update.message.text 
                 data["users"] = users 
-                WriteData(data)
-                await Alphabet(update, context)
+                WriteData(data) 
+                if my_active_game == "alphabet": await Alphabet(update, context)
+                elif my_active_game == "d1wg": await Day1WordGame(update, context)
             else:
                 await context.bot.delete_message(update.effective_chat.id, update.message.id)
                 wrong_ans = await update.effective_chat.send_message("Cavabınız yanlışdır!")
