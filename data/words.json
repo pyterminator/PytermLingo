@@ -1,0 +1,5 @@
+[
+    {"en":"book", "az":"kitab", "options":[]},
+    {"en":"pavement", "az":"səki", "options":["bear", "fox", "eagle"]},
+    {"en":"foreign", "az":"əcnəbi", "options":[]}
+]

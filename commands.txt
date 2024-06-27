@@ -1,6 +1,8 @@
-start - Bot haqqında məlumat ver
-help - Bot haqqında məlumat ver
-stop - Aktiv oyunu dayandır
-alphabet - İngilis əlifbasını əzbərləməyimə kömək et
-d1wg - Gün 1-in sözlərini məndən soruş
-aboutme - Neçə xalım var ?
+start - bot haqqında məlumat ver 
+stop - aktiv oyunu dayandır
+alphabet - ingilis əlifbasını əzbərləməyimə kömək et
+imagegame - ilk günün sözlərini məndən soruş
+imagegamenoletter - ilk günün sözlərini məndən soruş, amma hərfləri göstərmə
+wordgame - ingiliscə söz soruş
+wordgamenoletter - ingiliscə söz soruş, amma hərfləri göstərmə
+myscore - topladığım xal sayını göstər
